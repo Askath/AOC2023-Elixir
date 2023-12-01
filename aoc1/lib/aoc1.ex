@@ -13,7 +13,11 @@ defmodule Aoc1 do
 
   """
   def first_and_last(string) do
-    {String.first(string), String.last(string)}
+    first = String.first(string)
+    last = String.last(string)
+    IO.puts("first: #{first}, last: #{last}")
+
+    {first, last}
   end
 
   def read_file do
@@ -28,6 +32,13 @@ defmodule Aoc1 do
 
   def replace_spoken_numbers(list) do
     digits = [
+      {"eighthree", 83},
+      {"eightwo", 82},
+      {"fiveight", 58},
+      {"threeight", 38},
+      {"sevenine", 79},
+      {"oneight", 18},
+      {"twone", 21},
       {"one", 1},
       {"two", 2},
       {"three", 3},
@@ -59,13 +70,12 @@ defmodule Aoc1 do
       end)
 
     Enum.reduce(numbers, 0, fn {first, last}, acc ->
-      IO.puts("Previous: #{acc}")
-      IO.puts("First: #{first}")
-      IO.puts("Last: #{last}")
-      acc = acc + (String.to_integer(first) + String.to_integer(last))
-      IO.puts("After: #{acc}")
+      num = first <> last
+      IO.puts(num)
+      acc = acc + String.to_integer(num)
       acc
     end)
+    |> IO.inspect()
   end
 end
 
