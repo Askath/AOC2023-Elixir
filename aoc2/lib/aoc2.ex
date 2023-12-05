@@ -23,8 +23,14 @@ end
 
 file = Aoc2.parse_file()
 
-Enum.each(file, fn x ->
+Enum.reduce(file, fn x, acc ->
   game = Aoc2.game_number(x)
   game_id = String.replace(Enum.at(game, 0), ":", "")
   sets = Aoc2.sets(x)
+
+  Enum.each(sets, fn x ->
+    Enum.each(String.split(x, ","), fn y ->
+      Integer.parse(y) |> IO.inspect()
+    end)
+  end)
 end)
