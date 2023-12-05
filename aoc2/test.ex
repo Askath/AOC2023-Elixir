@@ -1,0 +1,87 @@
+defmodule Day02 do
+  def part2(input) do
+    input
+    |> String.split("\n")
+    |> Enum.map(&String.split(&1, ":"))
+    |> Enum.map(&List.last/1)
+    |> Enum.map(&power_of_set/1)
+    |> Enum.sum()
+  end
+
+  def part1(input) do
+    input
+    |> String.split("\n")
+    |> Enum.filter(&is_game_possible?/1)
+    |> Enum.map(&String.trim_leading(&1, "Game "))
+    |> Enum.map(&String.split(&1, ":"))
+    |> Enum.map(&List.first/1)
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.sum()
+  end
+
+  def is_game_possible?(line) do
+    # Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    line
+    |> String.split(":")
+    |> List.last()
+    |> String.split(";")
+    |> Enum.map(&to_color_map/1)
+    |> Enum.map(&is_set_possible?/1)
+    |> Enum.all?()
+  end
+
+  def to_color_map(cube_set) do
+    # 3 blue, 4 red
+    cube_set
+    |> String.split(",")
+    |> Enum.reduce(
+      %{red: 0, green: 0, blue: 0},
+      fn str, acc ->
+        amount =
+          str
+          |> String.split()
+          |> List.first()
+          |> String.to_integer()
+
+        color =
+          str
+          |> String.split()
+          |> List.last()
+          |> String.to_atom()
+
+        acc
+        |> Map.put(color, amount)
+      end
+    )
+  end
+
+  def is_set_possible?(
+        map_of_cube_set,
+        limit \\ %{red: 12, green: 13, blue: 14}
+      ) do
+    [
+      map_of_cube_set.red <= limit.red,
+      map_of_cube_set.green <= limit.green,
+      map_of_cube_set.blue <= limit.blue
+    ]
+    # true if all elements are truthy
+    |> Enum.all?()
+  end
+
+  def power_of_set(game) do
+    # 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+    game
+    |> String.split(";")
+    |> Enum.map(&to_color_map/1)
+    |> Enum.reduce(fn color_map, acc ->
+      %{
+        red: max(color_map.red, acc.red),
+        green: max(color_map.green, acc.green),
+        blue: max(color_map.blue, acc.blue)
+      }
+    end)
+    |> Map.values()
+    # multiplies values
+    |> Enum.reduce(&Kernel.*/2)
+  end
+end
