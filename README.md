@@ -4,6 +4,10 @@
 ## Overview
 This repository contains my solutions for the Advent of Code 2023, each implemented as a standalone Elixir project.
 
+AOC 1 - cleared
+
+AOC 2 - in progress
+
 ## Installation of Elixir
 To run these challenges, Elixir needs to be installed. We recommend using `asdf` for version management.
 
